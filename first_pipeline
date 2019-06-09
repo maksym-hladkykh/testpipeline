@@ -1,0 +1,28 @@
+#!groovy
+
+properties([disableConcurrentBuilds()]) // - свойство запрещающее выполнение нескольких заданий одновременно при быстрых комитах
+
+pipeline {
+    // Выбираем агента по метке мастер
+    agent { 
+        label 'master'
+        }
+    options {
+        // Опция сборки указывающая на хранение логов и артефактов из последних 10 сборок
+        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+        // В выводе сборки в графическом интерфейсе показывает временые отметки
+        timestamps()
+    }
+    stages {
+        stage("First step") {
+            steps {
+                sh 'ssh root@webtest \'hostname\''
+            }
+        }
+        stage("Second step") {
+            steps {
+                sh 'ssh root@webtest \'uptime\''
+            }
+        }
+    }
+}
