@@ -14,15 +14,20 @@ pipeline {
         timestamps()
     }
     stages {
-        stage("First step") {
+        stage("1 step") {
             steps {
                 sh 'ssh root@webtest \'hostname\''
             }
         }
-        stage("Second step") {
+        stage("2 step") {
             steps {
                 sh 'ssh root@webtest \'uptime\''
             }
         }
+        stage("3 step") {
+            steps {
+                sh 'ssh root@webtest echo "Pablic-IP:" `wget -qO- ipinfo.io/ip`'
+            }
+        }        
     }
 }
